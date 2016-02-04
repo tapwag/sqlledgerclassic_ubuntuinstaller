@@ -1,18 +1,20 @@
 #!/bin/bash
 #=====================================================================
 # Internatioinal SQL-Ledger-Network Association
-# Copyright (c) 2014-2015
+# Copyright (c) 2014-2016
 #
 #  Author: Maik Wagner
-#     Web: http://www.sql-ledger-network.com
+#     Web: http://www.linuxandlanguages.com
 #   Email: maiktapwagner@aol.com
 #
 #  Based on the ledger123 Installation Script by Sebastian Weitmann
-#   
+#  Edit: 4 February 2016: This script now pulls my tapwag/sql-ledger
+#  repostory instead of Tekki's. 
+# 
 #======================================================================
 #
-# Installation Script for SQL-Ledger Standard Version Tekki version
-# for Ubuntu 14.04.2 (Trusty Tahr) 
+# Installation Script for SQL-Ledger standard Version 3.2 version
+# for Ubuntu 14.04.3 (Trusty Tahr) 
 #
 #======================================================================
 # This program is free software: you can redistribute it and/or modify
@@ -51,7 +53,7 @@ a2enmod ssl
 a2enmod cgi
 service apache2 restart
 cd /usr/local
-git clone git://github.com/Tekki/sql-ledger.git
+git clone git://github.com/tapwag/sql-ledger.git
 cd /usr/local/sql-ledger
 git checkout -b full origin/full
 mkdir spool
