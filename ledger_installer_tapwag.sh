@@ -14,7 +14,7 @@
 #======================================================================
 #
 # Installation Script for SQL-Ledger standard Version 3.2 version
-# for Ubuntu 14.04.3 (Trusty Tahr) 
+# for Ubuntu 16.04.1 (Xenial Xerius) 
 #
 #======================================================================
 # This program is free software: you can redistribute it and/or modify
@@ -46,13 +46,13 @@ add-apt-repository "deb http://archive.ubuntu.com/ubuntu $(lsb_release -sc) univ
 apt-key update 
 apt-get update 
 apt-get upgrade 
-apt-get -y install git acpid apache2 postgresql libdbi-perl libdbd-pg-perl git-core gitweb postfix mailutils texlive texlive-lang-german
+apt-get -y install git acpid apache2 postgresql libdbi-perl libdbd-pg-perl git-core gitweb postfix mailutils
 a2ensite default-ssl
 service apache2 reload
 a2enmod ssl
 a2enmod cgi
 service apache2 restart
-cd /usr/local
+cd /var/www/html
 git clone git://github.com/tapwag/sql-ledger.git
 cd /usr/local/sql-ledger
 git checkout -b full origin/full
@@ -65,15 +65,14 @@ cd /etc/apache2/sites-enabled/
 ln -s ../sites-available/sql-ledger 001-sql-ledger
 
 echo "AddHandler cgi-script .pl" >> /etc/apache2/apache2.conf
-echo "Alias /sql-ledger /usr/local/sql-ledger" >> /etc/apache2/apache2.conf
-echo "<Directory /usr/local/sql-ledger>" >> /etc/apache2/apache2.conf
+echo "Alias /sql-ledger /var/www/html/sql-ledger" >> /etc/apache2/apache2.conf
+echo "<Directory /var/www/html/sql-ledger>" >> /etc/apache2/apache2.conf
 echo "Options ExecCGI Includes FollowSymlinks" >> /etc/apache2/apache2.conf
 echo "</Directory>" >> /etc/apache2/apache2.conf
-echo "<Directory /usr/local/sql-ledger/users>" >> /etc/apache2/apache2.conf
+echo "<Directory /var/www/html/sql-ledger/users>" >> /etc/apache2/apache2.conf
 echo "Order Deny,Allow" >> /etc/apache2/apache2.conf
 echo "Deny from All" >> /etc/apache2/apache2.conf
 echo "</Directory>" >> /etc/apache2/apache2.conf
-
 
 service apache2 restart
 cd ~/
@@ -92,11 +91,16 @@ su postgres -c "createuser -d -S -R sql-ledger"
 
 }
 
+latex_installation()
+{
+apt-get install texlive texlive-lang-german
+}
+
 
 # Main program
 
 clear
-echo "Copyright (C) 2015  International SQL-Ledger Network Associaton"
+echo "Copyright (C) 2016  International SQL-Ledger Network Associaton"
 echo "This is free software, and you are welcome to redistribute it under"
 echo "certain conditions; See <http://www.gnu.org/licenses/> for more details"
 echo "This program comes with ABSOLUTELY NO WARRANTY"
@@ -107,17 +111,31 @@ echo "- Modifying the main apache2.conf file to handle the SQL Ledger directory 
 echo "If you agree to these changes to your Ubuntu system please type 'installation'. Any other input will back you out and return to the command line."
 read input
 	
-if [ "$input" = "installation" ]; then
-		installation 
-	     	clear
-		echo 
-		echo "Thank you for your patience! The automatic installation has now been completed."
-		echo
-		echo "You should now be able to login to the latest SQL-Ledger Classic version (sql-ledger) as 'admin' on http://yourserver_ip/sql-ledger"		echo 
-		echo "Visit http://www.sql-ledger-network.com for more information on SQL-Ledger"
-		echo "Visit http://forum.sql-ledger-network.com for support"
-		echo "Suggestions for improvement and other feedback can be emailed to 'info@sql-ledger-network.com'. Thanks!"
-		echo
-		echo "IMPORTANT NOTE: This simple installation was designed to be run only on the local network."
+if [ "$input" = "installation" ]
+	 then
+		installation
 fi
+
+clear
+echo "For better results concerning the layout of your invoices etc. an additional installation of the LaTeX package is optional. "
+echo "For the server-sided creation of PDF documents this step become mandatory but invoices etc. can also be created in HTML. "
+echo "Type yes to proceed with the installation of the LaTeX packages, which may take a while. Any other input will back out."
+read input
+
+if [ "$input" = "yes" ]; then
+		latex_installation
+fi
+clear
+
+
+                echo "Thank you for your patience! The automatic installation has now been completed."
+                echo
+                echo "You should now be able to login to the latest SQL-Ledger Classic version (sql-ledger) as 'admin' on http://yourserver_ip/sql-ledger"     
+                echo "Visit http://www.sql-ledger-network.com for more information on SQL-Ledger"
+                echo "Visit http://forum.sql-ledger-network.com for support"
+                echo "Suggestions for improvement and other feedback can be emailed to 'info@sql-ledger-network.com'. Thanks!"
+                echo
+                echo "IMPORTANT NOTE: This simple installation was designed to be run only on the local network."
+
+
 exit 0
