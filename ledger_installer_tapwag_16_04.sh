@@ -53,7 +53,7 @@ service apache2 restart
 cd /var/www/html
 git clone git://github.com/tapwag/sql-ledger.git
 git checkout -b full origin/full
-cd sql-ledger
+cd /var/www/html/sql-ledger
 mkdir spool
 chown -hR www-data.www-data users templates css spool
 cp sql-ledger.conf.default sql-ledger.conf
