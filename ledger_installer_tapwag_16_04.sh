@@ -52,7 +52,6 @@ a2enmod cgi
 service apache2 restart
 cd /var/www/html
 git clone git://github.com/tapwag/sql-ledger.git
-cd /usr/local/sql-ledger
 git checkout -b full origin/full
 mkdir spool
 chown -hR www-data.www-data users templates css spool
@@ -102,10 +101,15 @@ echo "Copyright (C) 2016  International SQL-Ledger Network Associaton"
 echo "This is free software, and you are welcome to redistribute it under"
 echo "certain conditions; See <http://www.gnu.org/licenses/> for more details"
 echo "This program comes with ABSOLUTELY NO WARRANTY"
+echo ""
+echo ""
+
 echo "PLEASE NOTE:"
 echo "This script will make some fairly major changes to your Ubuntu system:"
+echo ""
 echo "- Adding universe repository"
 echo "- Modifying the main apache2.conf file to handle the SQL Ledger directory which will be in the default document root: /var/www/html"
+echo ""
 echo "If you agree to these changes to your Ubuntu system please type 'installation'. Any other input will back you out and return to the command line."
 read input
 	
