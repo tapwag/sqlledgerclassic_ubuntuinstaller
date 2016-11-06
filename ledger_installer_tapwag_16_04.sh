@@ -80,7 +80,7 @@ clear
 echo "Initialising Postgres - Press RETURN to continue"
 read confirmation
 locale-gen de_DE.UTF-8
-pg_createcluster --locale=de_DE.UTF-8 --encoding=UTF-8 9.3 main --start
+pg_createcluster --locale=de_DE.UTF-8 --encoding=UTF-8 9.5 main --start
 
 wget http://www.sql-ledger-network.com/debian/pg_hba.conf --retr-symlinks=no
 cp pg_hba.conf /etc/postgresql/9.5/main/
